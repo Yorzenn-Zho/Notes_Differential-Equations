@@ -1,0 +1,925 @@
+\documentclass[UTF8,oneside]{ctexbook}
+
+\title{Differential Equations}
+\pagestyle{empty}
+\date{}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{tabularx} % 自动调节列宽
+\usepackage{booktabs} % 更好看的表格线
+\usepackage{array} % 改善列格式
+
+
+\usepackage[most]{tcolorbox} % 导入tcolorbox
+
+% 定义一个 theorem 风格的方框
+\tcbset{
+  mytheorem/.style={
+    enhanced,
+    colback=white,          % 背景颜色
+    colframe=red!70!black,  % 边框颜色
+    colbacktitle=red!85!black, % 标题背景色
+    coltitle=white,         % 标题文字颜色
+    fonttitle=\bfseries,    % 标题加粗
+    attach boxed title to top left={xshift=2mm,yshift=-2mm}, % 标题位置
+    boxed title style={sharp corners}, % 标题方角
+    sharp corners,           % 四角直角（不要圆角）
+    top=3mm, bottom=3mm, left=3mm, right=3mm, % 内边距
+  }
+}
+
+
+
+
+\begin{document}
+
+
+\maketitle
+
+\chapter*{1 一阶微分方程}
+
+\section*{1.1 一阶变量分离性微分方程}
+
+一阶变量分离性(separable)方程的标准形式为：
+
+\[
+\frac{dy}{dx} = f(x)g(y)
+\]
+
+
+其中 \(f(x)\) 和 \(g(y)\) 是分别仅依赖于 \(x\) 和 \(y\) 的函数。解此类方程的步骤如下。
+
+一、当$g(y) \ne 0 $时:
+
+\begin{enumerate}
+    \item 将变量分离：将所有含 \(y\) 的项移到方程的一侧，含 \(x\) 的项移到另一侧：
+\[\frac{1}{g(y)} dy = f(x) dx
+\]
+    \item 对两边进行积分：
+\[\int \frac{1}{g(y)} dy = \int f(x) dx + C
+\]
+
+其中 \(C\) 是积分常数。
+    \item 得\[ G(y) = F(x) + C \]
+\end{enumerate}
+
+
+二、当$g(y) = 0 $时：
+
+设$y=y_0$是$g(y)=0$的解。
+
+\[
+\frac{dy_0}{dx} = f(x)g(y_0)
+\]
+
+左右两侧均为$0$，等式成立。因此，$y=y_0$是原方程的一个解。
+
+
+\section*{1.2 一阶线性微分方程}
+一阶线性(linear)微分方程的标准形式为：
+
+\[
+\frac{dy}{dx} + P(x)y = Q(x)
+\]
+
+其中 \(P(x)\) 和 \(Q(x)\) 是仅依赖于 \(x\) 的已知函数。解此类方程有两个方法。
+
+\subsection*{1.2.1 积分因子法}
+积分因子法的本质是将左边变成\textbf{乘积函数}的求导，然后再两边积分。
+
+\begin{enumerate}
+    \item 计算积分因子 \(\mu(x)\)：
+    
+\[
+\mu (x) = e^{\int P(x) \, dx}
+\]
+    \item 将原方程两边乘以 $\mu (x)$：
+\[
+\mu (x) \frac{dy}{dx} + \mu (x) P(x) y = \mu (x) Q(x)
+\]
+
+注意到左边是一个乘积函数，则
+
+\[
+\frac{d}{dx} [\mu (x) y] = \mu (x) Q(x)
+\]
+    \item 对两边进行积分：
+\[
+\mu (x) y = \int \mu (x) Q(x) \, dx + C
+\]
+
+\[
+\Rightarrow y = \frac{\int \mu(x) Q(x) \, dx + C}{\mu (x)}
+\]
+
+
+\end{enumerate}
+
+\subsection*{1.2.2 常数变易法}
+常数变易法的本质是\textbf{非齐次方程的解=齐次方程的通解+一个非齐次方程的特解}。其中，齐次解含有常数$C$，而非齐次特解不含常数$C$。
+
+\begin{enumerate}
+    \item 先解对应的齐次方程\[
+\frac{dy}{dx} + P(x)y = 0
+\]
+解得齐次解
+\[y = Ce^{-\int P(x) \, dx}\]
+    \item 设非齐次解为 $y=\mu (x)e^{-\int P(x) \, dx}$，则
+\[
+y^{'}=\mu^{'}(x)e^{-\int P(x) \, dx} - \mu (x)P(x)e^{- \int P(x) \, dx}
+\]
+    \item 将 $y$ 和 $y^{'}$ 代入原方程，化简得  
+\[\mu^{'}(x) = Q(x)e^{\int P(x) \, dx}\]
+再对$\mu^{'}(x)$积分，得
+
+\[
+\mu (x) = \int Q(x)e^{\int P(x) \, dx} \, dx + C
+\]
+
+    \item 将$\mu (x)$代入$y=\mu (x)e^{-\int P(x) \, dx}$，得非齐次方程的通解
+\end{enumerate}
+
+
+
+
+\subsection*{1.2.3 伯努利(Bernoulli)方程}
+
+伯努利方程(Bernoulli Equations) 是一阶常微分方程
+
+\[
+\frac{dy}{dx}+P(X)y=Q(x)y^n
+\]
+
+其中，$n \ne 0,1$。方程含非线性项$y^n(n\ne 1)$，可通过变量代换转化为\textbf{一阶线性微分方程求解}。
+
+例题：$y'-\varepsilon y= -\sigma y^{-2}$
+
+令$z=y^{1-n}=y^3$，则$\frac{dz}{dx}=3y^2\frac{dy}{dx}$。左右两边同乘$3y^2$，得
+
+\[
+3y^2\frac{dy}{dx}-3\varepsilon y^3=-3\sigma
+\]
+
+\[
+\Rightarrow \frac{dz}{dx}-3\varepsilon z=-3\sigma
+\]
+
+用积分因子法可求解，并将$z=y^3$代回得到结果。
+
+\section*{1.3 零次齐次方程}
+零次齐次方程满足：
+\[
+F(tx,ty) = t^0 F(x,y) = F(x,y) 
+\]
+
+\[
+\Rightarrow \frac{dy}{dx} = F\left(\frac{y}{x}\right)
+\]
+
+右边仅依赖于$\frac{y}{x}$的函数，不含独立常数项。
+
+若右边含有常数项，如
+\[
+\frac{dy}{dx} = \frac{2x+y+1}{x+2y+3}
+\]
+
+可通过变量代换将其化为零次齐次方程。
+\begin{itemize}
+    \item 令$x=X+h$，$y=Y+k$，其中$h,k$为常数
+    \item 令常数项为$0$，即解方程组计算$h,k$，使右端只含$\frac{Y}{X}$的函数
+    \item 解零次齐次方程$\frac{dY}{dX}=F\left(\frac{Y}{X}\right)$
+    \item 将$X=x-h$，$Y=y-k$代回
+    \item 若无法解方程组，则说明该方程不是零次齐次方程
+\end{itemize}
+ 
+\vspace{1\baselineskip}
+解零次齐次方程的步骤如下：
+
+\begin{enumerate}
+    \item 令 $u=\frac{y}{x}$，则 $y=ux$，$\frac{dy}{dx} = u + x\frac{du}{dx}$
+    \item 代入$\frac{dy}{dx} = F\left(\frac{y}{x}\right)$，得 
+\[
+u + x\frac{du}{dx} = F(u)
+\]
+
+\[
+\frac{du}{F(u) - u} = \frac{dx}{x}
+\]
+
+    \item 两边积分
+\[
+\int \frac{1}{F(u) - u} \, du = \int \frac{1}{x} \, dx
+\]
+
+最后将$u=\frac{y}{x}$代回。
+
+\end{enumerate}
+
+
+\section*{1.4 线性方程与非线性方程}
+
+一阶线性微分方程的标准形式为：
+\[\frac{dy}{dx} + P(x)y = Q(x)
+\]
+
+其中：
+\begin{itemize}
+    \item $y$和$\frac{dy}{dx}$均以一次幂出现
+    \item 系数只能是关于$x$的函数，不能含有$y$
+    \item 不允许出现$y^2$，$y\cdot \frac{dy}{dx}$，$\frac{1}{y}$，$e^y$等非线性项
+\end{itemize}
+
+否则，该方程为非线性方程。
+
+\vspace{1\baselineskip}
+
+当方程以$\dfrac{dy}{dx} = f(x,y)$形式出现但求解困难时，可尝试将其整理为
+
+\[
+\dfrac{dx}{dy} + P(y)x = Q(y)
+\]
+
+交换自变量和因变量。
+
+\subsection*{1.4.1 存在性与唯一性}
+
+
+\begin{tcolorbox}[mytheorem,
+  title=Theorem 4.1 \quad 存在性与唯一性]
+
+
+
+无论线性方程or非线性方程，对于初值问题(Initial Value Problem,I.V.P)
+
+\[
+\begin{cases}
+    y' = f(t,y)\\
+    y(t_0)=y_0
+\end{cases}
+\]
+
+当$f(t,y)$和$\frac{\partial f}{\partial y}$在$(t_0,y_0)$附近连续时，I.V.P存在且唯一解。
+
+
+\end{tcolorbox}
+
+其中：
+
+\begin{itemize}
+    \item $f(t,y)$连续$\rightarrow$I.V.P存在解
+    \item $f(t,y)$连续 $\&$ $\frac{\partial f}{\partial y}$连续$\rightarrow$I.V.P存在且唯一解
+\end{itemize}
+
+
+\vspace{2\baselineskip}
+
+\section*{1.5 自治微分方程与非自治微分方程}
+
+\subsection*{1.5.1 自治微分方程}
+
+所有一阶微分方程可分为自治方程和非自治方程。
+
+自治(exact)方程的标准形式为：
+\[\frac{dy}{dx} = f(y)
+\]
+
+非自治方程的标准形式为：
+\[\frac{dy}{dx} = f(x,y)
+\]
+
+\subsection*{1.5.2 方向场}
+对于一阶微分方程
+
+\[
+\frac{dy}{dx} = f(x,y)
+\]
+
+在平面上每一点$(x,y)$处，斜率为$f(x,y)$的线段称为该点的方向元素。所有方向元素构成的图形称为该方程的方向场。
+
+\subsubsection{自治方程}
+
+
+\textbf{平衡解}是$y$与$x$无关的解，即\textbf{常数解}。平衡解满足$\frac{dy}{dx}=0$。
+
+自治方程方向场的图像特征：
+
+\begin{itemize}
+    \item 是否含平衡解，取决于$\frac{dy}{dx}=0$是否有解
+    \item 若含平衡解$y=y_0$，则在$y=y_0$处方向元素水平
+    \item 方向元素与$x$无关，只与$y$有关，表现为每个水平方向上，小斜线均重复
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1.0\textwidth]{figures/1.5.2_Autonomous.png}
+    \caption{自治方程方向场示例}
+    \label{fig:自治方程方向场}
+\end{figure}
+
+如图\ref{fig:自治方程方向场}所示，方程$\frac{dp}{dt} = 0.5p -450$的解为$p=900+Ce^{t/2}$，方向场中平衡解$p=900$处方向元素水平。
+
+\subsubsection{非自治方程}
+
+目前遇到的非自治方程的例子——一阶线性非齐次方程
+
+\[
+\frac{dy}{dx} + P(x)y = Q(x)
+\]
+
+其中 $Q(x) \ne 0$。
+
+解的结构为：齐次解（含$C$）+特解（不含$C$）。
+
+非自治方程方向场的图像特征：
+
+\begin{itemize}
+    \item 不含平衡解
+    \item 方向元素与$x$有关，每个水平方向上，小斜线不重复
+    \item 随着$x \to \pm \infty$，所有解趋向于/远离特解
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1.0\textwidth]{figures/1.5.2_Non_Autonomous.png}
+    \caption{非自治方程方向场示例}
+    \label{fig:非自治方程方向场}
+\end{figure}
+
+如图\ref{fig:非自治方程方向场}所示，方程$\frac{dy}{dt} + \frac{1}{2}y = \frac{1}{2}e^{t/3}$的解为$y=\frac{3}{5}e^{t/3}+Ce^{-t/2}$，方向场中无平衡解。
+
+但随着$t \to + \infty$，所有解趋向于特解$y=\frac{3}{5}e^{t/3}$。
+
+\vspace{2\baselineskip}
+
+\subsection*{1.5.3 逻辑斯蒂函数}
+
+逻辑斯蒂函数(Logistic)用于描述具有饱和增长特性的种群增长
+
+
+\[
+\frac{dy}{dt} = r(1-\frac{y}{K})y
+\]
+
+其中$r$是增长率，$K$是环境容纳量。解该微分方程，得
+
+\[
+y = \frac{K}{1+Ce^{-rt}}
+\]
+
+若初始值$y(0)=y_0$，则
+
+\[
+y =\frac{y_0 K}{y_o+(K-y_0)e^{-rt}}
+\]
+
+\vspace{5\baselineskip}
+
+\subsubsection{平衡解}
+
+令$y'=0$，得平衡解$y=0$和$y=K$。
+
+\begin{itemize}
+    \item 当$0<y<K$，$\frac{dy}{dt}>0$，$y(t)$单调递增
+    \item 当$y>K$，$\frac{dy}{dt}<0$，$y(t)$单调递减
+\end{itemize}
+
+
+
+$\therefore$  当$ t \rightarrow \infty,~ y = \frac{K}{1+Ce^{-rt}} \rightarrow K$
+
+
+即解趋近于$K$。
+
+\vspace{1\baselineskip}
+
+稳定的平衡解指：系统暂时偏离这个平衡解，但最终仍能回到平衡解。
+
+\begin{itemize}
+    \item 对于$y=0$：当$y$略大于$0$时，$\frac{dy}{dt} > 0$，即$y$远离平y衡解$0$。$\therefore y=0$不是稳定的平衡解。
+    \item 对于$y=K$：当$y$略大于$K$时，$\frac{dy}{dt} < 0$，即$y$靠近平衡解$K$；当$y$略小于$K$时，$\frac{dy}{dt} > 0$，即$y$靠近平衡解$K$。$\therefore y=K$是稳定的平衡解。
+\end{itemize}
+
+
+
+
+\subsubsection{凹凸性与拐点}
+
+计算$y$的二阶导
+
+\[
+\frac{d^2y}{dt^2} = r^2(1-\frac{y}{K})y(1-\frac{2y}{K})
+\]
+
+随着$t \rightarrow\infty$，最终$y\rightarrow \infty$。故$0<y<K$。
+
+\begin{itemize}
+    \item 当$0<y<\frac{K}{2},\frac{d^y}{dt^2} > 0$，曲线是凹的。
+    \item 当$\frac{K}{2}<y<K,\frac{d^y}{dt^2} < 0$，曲线是凸的。
+\end{itemize}
+
+拐点处$\frac{d^y}{dt^2}=0$，故拐点为$y=\frac{K}{2}$。
+
+\vspace{7\baselineskip}
+
+\section*{1.6 恰当方程与积分因子}
+
+
+\subsection*{1.6.1 恰当方程}
+\begin{tcolorbox}[mytheorem,
+    title=Theorem 1.6.1 \quad 恰当性的判定定理]
+
+对于方程
+
+\[
+M(x,y) \, dx+N(x,y) \, dy=0
+\]
+    
+若存在二元函数$u(x,y)$，使$\frac{\partial u}{\partial x}=M(x,y),\frac{\partial u}{\partial y}=N(x,y)$，则方程$M \, dx+N \, dy=0$称为恰当方程。
+且充要条件为
+
+\[
+\frac{\partial M}{\partial y}=\frac{\partial N}{\partial x}
+\]
+
+\end{tcolorbox}
+
+例题：$(2x+y) \, dx+(x+2y) \, dy=0$
+
+设$M=2x+y,N=x+2y.$则 $\frac{\partial M}{\partial y}=1=\frac{\partial N}{\partial x}$，符合恰当方程的定义。
+
+
+
+
+\[
+\frac{\partial u}{\partial x}=2x+y  \Rightarrow u = \int (2x+y) \, dx = x^2+xy+ \underset{\text{常数可能与 $y$ 有关}}{\varphi(y)}
+\]
+
+\[
+\Rightarrow \frac{\partial u}{\partial y}=x+\varphi ' (y) =N = x+2y
+\]
+
+$\therefore \varphi '(y)=2y,\varphi(y)=y^2+C$。
+
+$\therefore u(x,y)=x^2+xy+y^2$，通解为$x^2+xy+y^2=C$。
+
+\subsection*{1.6.2 积分因子}
+
+设积分因子$v(x,y)$，使$v(x,y)M \, dx+v(x,y) N \, dy =0$为恰当方程。
+则需满足：
+
+\[
+\frac{\partial(vM)}{\partial y} = \frac{\partial (vN)}{\partial x} \Rightarrow Mv_y-Nv_x+(M_y-N_x) v=0
+\]
+
+\begin{itemize}
+    \item 当$v$仅依赖$x$，则满足$\frac{dv}{dx}=\frac{M_y-N_x}{N}v$，此时$v=v(x)$
+    \item 当$v$仅依赖$y$，则满足$\frac{dv}{dy}=\frac{M_y-N_x}{-M}v$，此时$v=v(y)$
+\end{itemize}
+
+\section*{1.7 数值逼近：欧拉方法}
+
+欧拉方法是求解一阶初值问题的基础数值近似方法。
+
+\[
+\begin{cases}
+    \text{D.E.} \quad \dfrac{dy}{dt} = f(t,y) \\
+    \text{I.C.} \quad y(0) = y_0
+\end{cases}
+\]
+
+\paragraph{1. 局部切线近似：}
+
+\quad
+
+解函数$y=\phi(t)$在$t=t_0$处的切线斜率为$\dfrac{dy}{dt} = f(t_0,y_0)$，在$t_0$附近，用切线方程近似解曲线
+
+\[
+y_1 = y_0 + f(t_0,y_0)(t_1-t_0)
+\]
+
+\paragraph{2. 迭代扩展}
+
+取步长$h = t_{n+1} - t_n$（即每一步的间隔相同），得迭代公式为
+
+\[
+y_{n+1} = y_n + h \cdot f(t_n,y_n), \quad n = 0, 1, 2, \cdots
+\]
+
+欧拉方法易实现，但精度有限：
+
+\begin{itemize}
+    \item 步长$h$越小，精度越高，但计算量越大
+    \item 收敛解族的误差增长缓慢，但发散解族的误差会急剧放大，需采用更高效的数值方法
+\end{itemize}
+
+\vspace{14\baselineskip}
+
+
+\section*{1.8 解的存在唯一性定理}
+
+\subsection*{1.8.1 解的存在唯一性定理}
+
+\begin{tcolorbox}[mytheorem,
+    title=Theorem 1.8.1 \quad 一阶微分方程的存在唯一性定理]
+
+考虑初值问题
+
+\[
+\begin{cases}
+    y' = f(t,y)\\
+    y(0) = 0
+\end{cases}
+\]
+    
+若f(t,y)在矩形区域$R:|t| \le a,|y| \le b$上连续，则该初值问题在该区域内存在唯一解。
+
+\end{tcolorbox}
+
+\subsection*{1.8.2 微分方程与积分方程的等价性}
+
+对于初值问题
+
+\[
+\begin{cases}
+    y' = f(t,y)\\
+    y(t_0) = y_0
+\end{cases}
+\]
+
+对$y'=f(t,y)$从$t_0$到$t$积分，并结合初始条件$y(t_0) = y_0$，可得积分方程
+
+\[
+\phi (t) = y_0 + \int_{t_0}^{t}f(s,\phi(s)) \, ds
+\]
+
+即：微分方程初值问题的解$\phi(t)$与该积分方程的解完全等价。
+
+\subsection*{1.8.3 皮卡逐步逼近法}
+
+对于初值问题
+
+\[
+\begin{cases}
+    y' = f(t,y)\\
+    y(t_0) = y_0
+\end{cases}
+\]
+
+定义常数函数$\phi_0(t_0) = y_0$，有第n次近似解
+
+\[
+\phi_{n+1}(t) = y_0 + \int_{t_0}^t f(s,\phi_n(s)) \, ds
+\]
+
+\subsection*{1.8.4 里卡蒂(Riccati)方程}
+
+Riccati方程是一阶非线性常微分方程，其标准形式为
+
+\[
+\dfrac{dy}{dt} = q_1(t)+q_2(t)y+q_3(t)y^2
+\]
+
+需已知某特解$y_1(t)$，令$y(t) = z(t) + y_1(t)$，则
+
+\[
+\dfrac{dy}{dt} = \frac{dz}{dt} + \frac{dy_1}{dt}
+\]
+
+将其代入原方程
+
+\[
+\begin{aligned}
+    \frac{dz}{dt}+\frac{dy_1}{dt}
+    &= q_1(t)+q_2(t)(z+y_1)+q_3(t)(z+y_1)^2 \\
+    &= \left[q_1(t)+q_2(t)y_1+q_3(t)y_1^2\right]
+    + q_2(t)z + q_3(t)z^2 + 2q_3(t)y_1 z
+\end{aligned}
+\]
+
+由于$\dfrac{dy}{dt} = q_1(t)+q_2(t)y_1+q_3(t)y_1^2$，上式可简化
+
+\[
+\frac{dz}{dt} = (q_2(t) + 2q_3(t)y_1(t))z+q_3(t)z^2
+\]
+
+化简为Bernoulli方程，作变量替换$u=z^{-1}$可解。
+
+\chapter*{2 二阶微分方程}
+
+\section*{2.1 可降阶的二阶微分方程}
+
+降阶法科求解部分\text{非线性}、\text{变系数}的二阶方程。
+
+\subsection*{2.1.1 $y''=f(x)$}
+
+仅含$x$。两次积分即可求解。
+
+\begin{itemize}
+    \item 第一次积分：$y'=\int f(x) \, dx + C_1$
+    \item 第二次积分：$y=\int (\int f(x) \, dx + C_1) \, dx +C_2$
+\end{itemize}
+
+\subsection*{2.1.2 $y''=f(x,y')$}
+
+不含$y$。令$p=y'$，则$y''=\dfrac{dp}{dx}$，方程变为一阶方程$\dfrac{dp}{dx}f(x,p)$。
+
+\subsection*{2.1.3 $y''=f(y,y')$}
+
+不含$x$。令$p=y'$，则$y''=p\dfrac{dp}{dy}$，方程变为一阶方程$p\dfrac{dp}{dy}=f(y,p)$。
+
+\vspace{5\baselineskip}
+
+\section*{2.2 二阶线性常系数微分方程}
+
+对于二阶线性常系数齐次方程，有以下定理
+
+\[
+y'' + py' + qy = 0
+\]
+
+\subsubsection*{1. 微分算子与存在唯一性定理}
+
+\paragraph{微分算子}
+
+\quad
+
+设$p(x),q(x)$是区间$I$上的连续函数，定义微分算子
+
+\[
+L[\phi] = \phi''+p(x)\phi'+q(x)\phi
+\]
+
+它将函数$\phi_(x)$映射为另一个函数。
+
+\paragraph{存在唯一性定理}
+
+\quad
+
+对于初值问题
+
+\[
+\begin{cases}
+    y''+p(x)y'+q(t)y = f(x)\\
+    y(x_0) = y_0,y'(x_0) = y_0'
+\end{cases}
+\]
+
+若$p,q,f$在包含$t_0$的开区间$I$上连续，则该问题在$I$上存在唯一解。
+
+\subsubsection*{2. 叠加原理}
+
+若$y_1,y_2$是$L[y] = 0$的解，则对任意常数$c_1,c_2$，线性组合$y=c_1y_1+c_2y_2$也是解。
+
+\subsubsection*{3. 朗斯基行列式(Wronskian)与基本解组}
+
+对两个解$y_1,y_2$，定义朗斯基行列式
+
+\[
+W[y_1,y_2](t) = 
+\begin{vmatrix}
+y_1(t)&y_2(t)\\
+y_1'(t)&y_2(t)
+\end{vmatrix}
+\]
+
+若$W[y_1,y_2](t)\ne 0$，则$y_1,y_2$线性无关，构成基本解组，方程的通解为
+
+\[
+y=c_1y_1+c_2y_2
+\]
+
+\subsubsection*{4. 复值解的实部与虚部}
+
+若$y=u(t)+iv(t)$是方程$L[y]=0$的复值解，则其实部$u(t)$和虚部$v(t)$也是方程的解。
+
+\subsubsection*{5. 阿贝尔定理(Abel's Theorem)}
+
+若$y_1,y_2$是方程$y''+p(t)y'+q(t)y=0$的解，则朗斯基行列式满足
+
+\[
+W[y_1,y_2](t) = ce^{-\int p(t) \, dt} 
+\]
+
+其中$c=W(t_0)$
+
+\subsubsection*{6. 克莱姆法则(Cramer)}
+
+设二阶线性齐次微分方程的通解为$y(t) = c_1y_1(t) +c_2y_2(t)$，给定初值条件$y(t_0)=y_0,y'(t_0)=y_0'$，需要确定习俗$c_1,c_2$。将初值代入通解
+
+\[
+\begin{cases}
+    c_1y_1(t_0)+c_2y_2(t_0)=y_0\\
+    c_1y_1'(t_0)+c_2y_2'(t_0)=y_0'
+\end{cases}
+\]
+
+\paragraph{求$c_1$：}
+
+\quad
+
+将系数矩阵的第一列替换为初值向量
+$\begin{bmatrix}
+    y_0\\y_0'
+\end{bmatrix}$，则
+
+\[
+c_1=\dfrac{\begin{vmatrix}y_0&y_2(t_0)\\y_0'&y_2'(t_0)\end{vmatrix}}{W[y_1,y_2](t_0)}
+\]
+
+\paragraph{求$c_2$：}
+
+\quad
+
+将系数矩阵的第二列替换为初值向量
+$\begin{bmatrix}
+    y_0\\y_0'
+\end{bmatrix}$，则
+
+\[
+c_2=\dfrac{\begin{vmatrix}y_1(t_0)&y_0\\y_1'(t_0)&y_0'\end{vmatrix}}{W[y_1,y_2](t_0)}
+\]
+
+利用朗斯基行列式判断基本解组的线性无关性，再用克莱姆法则，在已知初值条件时确定通解中的系数$c_1,c_2$。
+
+\subsection*{恰当方程与伴随方程}
+
+
+\subsection*{2.2.1 齐次方程}
+
+考虑齐次方程
+
+\[
+y''+py'+qy=0
+\]
+
+\begin{enumerate}[label=STEP\arabic*]
+    \item 写特征方程：$r^2+pr+q=0$
+    \item 解特征根，按根的类型定通解：
+        \begin{itemize}
+            \item $r_1 \ne r_2$：$y=C_1e^{r_1x} + C_2e^{r_2x}$
+            \item $r_1=r_2=r$：$=C_1e^{rx}+C_2xe^{rx}$
+            \item 共轭复根$r=\alpha \pm i \beta$：$y=e^{\alpha x}(C_1 \cos \beta x + C_2 \sin \beta x)$
+        \end{itemize}
+\end{enumerate}
+
+\subsection*{2.2.2 非齐次方程}
+
+考虑非齐次方程
+
+\[
+y''+py'+qy=f(x) \; (f(x)\not\equiv 0)
+\]
+
+通解=齐次通解+非齐次通解。
+
+用待定系数法设特解形式，该方法仅适用于$f(x)$是多项式、指数函数、正余弦函数，或它们的乘积。
+
+\subsubsection*{1. $f(x)=P_m(x)$（$m$次多项式，如$f(x)=3x^2+2x+1$）}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{c c}
+\toprule
+特征根与$r=0$的关系 & 特解$y_p$假设形式  \\
+\midrule
+$r=0$不是特征根 & $y_p=Q_m(x)=Ax^2+Bx+C$  \\
+$r=0$是单特征根 & $y_p=x\cdot Q_m(x)$  \\
+$r=0$是二重特征根 & $y_p=x^2\cdot Q_m(x)$  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\vspace{4\baselineskip}
+
+\subsubsection*{2. $f(x)=Ae^{\alpha x}$（或$Pn(x)e^{\alpha x}$，多项式×指数的本质一致}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{c c}
+\toprule
+特征根与$\alpha$的关系 & 特解$y_p$假设形式  \\
+\midrule
+$\alpha$不是特征根 & $y_p=Be^{\alpha x}$  \\
+$\alpha$是单特征根 & $y_p=x\cdot Be^{\alpha x}$  \\
+$\alpha$是二重特征根 & $y_p=x^2\cdot Be^{\alpha x}$  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection*{3. $f(x) = A\cos (\beta x)+B\sin (\beta x)$（或$P_n(x)[A\cos (\beta x)+B\sin (\beta x)]$，多项式×三角函数的本质一致}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{c c}
+\toprule
+特征根与$i\beta$的关系 & 特解$y_p$假设形式  \\
+\midrule
+$i\beta$不是特征根 & $y_p=C\cos (\beta x)+D\sin (\beta x)$  \\
+$i\beta$是特征根 & $y_p=x\cdot C\cos (\beta x)+D\sin (\beta x)$  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection*{4. $f(x)=e^{\alpha x}(A\cos (\beta x)+B\sin (\beta x))$（指数×正余弦）}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{c c}
+\toprule
+特征根与$\alpha \pm i\beta$的关系 & 特解$y_p$假设形式  \\
+\midrule
+$\alpha \pm i\beta$不是特征根 & $y_p=e^{\alpha x}(C\cos (\beta x)+D\sin (\beta x))$  \\
+$\alpha \pm i\beta$是特征根 & $y_p=x\cdot e^{\alpha x}(C\cos (\beta x)+D\sin (\beta x))$  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\section*{2.3 二阶线性变系数微分方程}
+
+欧拉方程是典型的二阶线性变系数微分方程
+
+\[
+t^2y''(t)+\alpha t y'(t)+\beta y(t) = 0
+\]
+
+设$t=e^x$，将$y$对$t$的导数转化为对$x$的导数
+
+\[
+\dfrac{d^2y}{dx^2}+(\alpha-1)\dfrac{dy}{dx}+\beta y = 0
+\]
+
+
+
+
+\chapter*{3 高阶微分方程}
+
+\section*{3.1 高阶微分方程解的理论}
+
+
+
+
+
+\section*{3.2 常系数齐次线性微分方程}
+
+对n阶方程$L[y]=a_0y^{(n)}+a_1y^{(n-1)}+\cdots+a_n y=0$，假设解为$y=e^{rt}$，代入得特征多项式
+
+\[
+Z(r) = a_0r^n+a_1r^{n-1}+\cdots+a_n
+\]
+
+\subsection*{1. 实根且互不相等}
+
+若有n个不同实根$r_1,r_2,\cdots,r_n$，则通解为
+
+\[
+y=c_1e^{r_1t}+c_2e^{r_2t}+\cdots+c_ne^{r_n t}
+\]
+
+\subsection*{2. 复共轭根}
+
+若有复共轭根$r=\lambda\pm i \mu$。则对应是实值解为$e^{\lambda t}\cos \mu t,e^{\lambda t} \sin \mu t$。
+
+\subsection*{3. 重根}
+
+若$r$是k重实根，对应解为$e^{rt},te^{rt},\cdots,t^{k-1}e^{rt}$。
+
+\section*{3.3 待定系数法}
+
+
+
+
+\section*{3.4 常数变易法}
+
+设齐次方程的n个线性无关解为$y_1,y_2,\cdots,y_n$，则齐次通解为
+
+\[
+y_h=c_1y_1+c_2y_2+\cdots+c_ny_n
+\]
+
+将常数$c_1,\cdots,c_n$替换为待定函数$u_1(t),\cdots,u_n(t)$，假设特解
+
+\[
+y_p=u_1y_1+u_2y_2+\cdots+u_ny_n
+\]
+
+\[
+W=
+\begin{vmatrix}
+    y_1&y_2&\cdots&y_n\\
+    y_1'&y_2'&\cdots&y_n'\\
+    \vdots&\vdots&\ddots&\vdots\\
+    y_1^{(n-1)}&y_2^{(n-1)}&\cdots&y_n^{(n-1)}
+\end{vmatrix}
+\]
+
+替换行列式$W_m$：将$W$的第$m$列替换为
+$\begin{bmatrix}
+    0&0&\cdots&g(t)
+\end{bmatrix}^T$（共n行）
+
+则$u_m'=\dfrac{W_m}{W}$。
+
+\end{document}
