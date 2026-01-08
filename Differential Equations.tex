@@ -858,9 +858,44 @@ t^2y''(t)+\alpha t y'(t)+\beta y(t) = 0
 
 \section*{3.1 高阶微分方程解的理论}
 
+对于 $n$ 阶线性微分方程，其标准形式为：
+$$ L[y] = y^{(n)} + p_1(t)y^{(n-1)} + \cdots + p_n(t)y = g(t) $$
+如果 $g(t) = 0$，称为齐次方程；如果 $g(t) \neq 0$，称为非齐次方程。
 
+\subsection*{1. 朗斯基行列式 (Wronskian) 与线性无关}
+对于定义在区间 $I$ 上的 $n$ 个解 $y_1, y_2, \cdots, y_n$，其线性无关性由朗斯基行列式判定：
+$$ W(y_1, \cdots, y_n)(t) = \begin{vmatrix} 
+y_1 & y_2 & \cdots & y_n \\
+y_1' & y_2' & \cdots & y_n' \\
+\vdots & \vdots & \ddots & \vdots \\
+y_1^{(n-1)} & y_2^{(n-1)} & \cdots & y_n^{(n-1)}
+\end{vmatrix} $$
+若 $W(t_0) \neq 0$（哪怕仅在一点），则这组解线性无关，构成方程的\textbf{基础解系}。
 
+\subsection*{2. 通解结构定理}
+非齐次线性微分方程的通解结构为：
+$$ y(t) = y_h(t) + y_p(t) $$
+其中：
+\begin{itemize}
+    \item $y_h(t) = c_1y_1 + \cdots + c_ny_n$ 是对应齐次方程的通解（Complementary Solution）。
+    \item $y_p(t)$ 是非齐次方程的任意一个特解（Particular Solution）。
+\end{itemize}
 
+\subsection*{典型例题 1：验证基础解系}
+验证 $y_1=1, y_2=\cos t, y_3=\sin t$ 是方程 $y''' + y' = 0$ 的基础解系。
+
+\textbf{解：}
+首先代入验证：
+$y_1'=0 \implies$ 满足。
+$y_2''' + y_2' = \sin t - \sin t = 0 \implies$ 满足。
+同理 $y_3$ 满足。
+计算朗斯基行列式：
+$$ W = \begin{vmatrix} 
+1 & \cos t & \sin t \\
+0 & -\sin t & \cos t \\
+0 & -\cos t & -\sin t 
+\end{vmatrix} = 1 \cdot (\sin^2 t + \cos^2 t) = 1 \neq 0 $$
+因为 $W \neq 0$，故三者线性无关，构成基础解系。
 
 \section*{3.2 常系数齐次线性微分方程}
 
@@ -888,8 +923,78 @@ y=c_1e^{r_1t}+c_2e^{r_2t}+\cdots+c_ne^{r_n t}
 
 \section*{3.3 待定系数法}
 
+当非齐次项 $g(t)$ 为多项式、指数函数、正弦/余弦函数或其乘积时，我们可以推测特解 $y_p$ 的形式。核心原则是：$y_p$ 的形式应与 $g(t)$ 及其导数的形式一致。
 
+\subsection*{1. 特解形式设定表}
+设 $P_n(t)$ 为 $n$ 次多项式：
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{非齐次项 $g(t)$} & \textbf{特解试探形式 $y_p(t)$} \\
+\hline
+$P_n(t) = a_n t^n + \cdots + a_0$ & $t^s (A_n t^n + \cdots + A_0)$ \\
+\hline
+$P_n(t)e^{\alpha t}$ & $t^s (A_n t^n + \cdots + A_0) e^{\alpha t}$ \\
+\hline
+$P_n(t)e^{\alpha t} \begin{cases} \sin \beta t \\ \cos \beta t \end{cases}$ & $t^s e^{\alpha t} [(A_n t^n + \cdots) \cos \beta t + (B_n t^n + \cdots) \sin \beta t]$ \\
+\hline
+\end{tabular}
+\end{center}
 
+\subsection*{2. 修正因子 $t^s$ 的确定规则 (重难点)}
+这是待定系数法中最容易出错的一步。
+\textbf{规则：} 若推测的特解形式中，某一项已经是齐次方程通解 $y_h$ 中的解，则必须乘以 $t^s$，其中 $s$ 是使得该项不再是 $y_h$ 解的最小正整数（即重根次数）。
+\begin{itemize}
+    \item 若 $\alpha$ 不是特征根，则 $s=0$。
+    \item 若 $\alpha$ 是特征方程的 $k$ 重根，则 $s=k$。
+    \item 对于复数情形，看 $\alpha \pm i\beta$ 是否为特征根。
+\end{itemize}
+
+\subsection*{典型例题 2：共振情形（Correction Factor）}
+求微分方程的通解：
+$$ y'' - 4y' + 4y = 2e^{2t} + 8t - 12 $$
+
+\textbf{解：}
+\textbf{第一步：求齐次通解 $y_h$}
+特征方程 $r^2 - 4r + 4 = 0 \implies (r-2)^2 = 0$。
+特征根为 $r_1 = r_2 = 2$（二重根）。
+$$ y_h(t) = c_1 e^{2t} + c_2 t e^{2t} $$
+
+\textbf{第二步：设定特解 $y_p$ 形式}
+利用叠加原理，将 $g(t)$ 分为两部分：$g_1(t) = 2e^{2t}$ 和 $g_2(t) = 8t - 12$。
+
+1. 对于 $2e^{2t}$：
+初步设想为 $A e^{2t}$。但观察发现，$e^{2t}$ 和 $te^{2t}$ 均已出现在 $y_h$ 中（因为 $r=2$ 是二重根）。
+故需修正，乘以 $t^2$：
+$$ y_{p1} = A t^2 e^{2t} $$
+
+2. 对于 $8t - 12$：
+这是1次多项式，且 $r=0$ 不是特征根，故无需修正：
+$$ y_{p2} = Bt + C $$
+
+综上，特解形式为 $y_p = A t^2 e^{2t} + Bt + C$。
+
+\textbf{第三步：代入求解系数}
+计算导数：
+$y_p' = A(2te^{2t} + 2t^2e^{2t}) + B$
+$y_p'' = A(2e^{2t} + 4te^{2t} + 4te^{2t} + 4t^2e^{2t}) = A(4t^2 + 8t + 2)e^{2t}$
+
+代入原方程 $y'' - 4y' + 4y$：
+$$ \underbrace{A(4t^2+8t+2)e^{2t}}_{y''} - 4\underbrace{[A(2t+2t^2)e^{2t}+B]}_{y'} + 4\underbrace{[At^2e^{2t}+Bt+C]}_{y} = 2e^{2t} + 8t - 12 $$
+
+整理 $e^{2t}$ 项：
+$$ At^2(4 - 8 + 4) + At(8 - 8) + 2A = 2A e^{2t} $$
+（注意：$t^2$ 和 $t$ 的系数必然抵消为0，这是正确设定 $s$ 的结果）
+令 $2A = 2 \implies A = 1$。
+
+整理多项式项：
+$$ 4Bt + (4C - 4B) = 8t - 12 $$
+比较系数：
+$4B = 8 \implies B = 2$
+$4C - 4(2) = -12 \implies 4C = -4 \implies C = -1$
+
+\textbf{第四步：写出通解}
+$$ \boxed{y(t) = c_1 e^{2t} + c_2 t e^{2t} + t^2 e^{2t} + 2t - 1} $$
 
 \section*{3.4 常数变易法}
 
@@ -921,5 +1026,556 @@ $\begin{bmatrix}
 \end{bmatrix}^T$（共n行）
 
 则$u_m'=\dfrac{W_m}{W}$。
+
+\chapter*{4 二阶线性方程的幂级数解}
+
+\section*{4.1 弗罗贝尼乌斯 (Frobenius) 方法核心笔记}
+
+本笔记旨在总结二阶线性变系数微分方程在正则奇点处的级数解法，特别是如何快速构建指标方程与递推公式。
+
+\subsection*{1. 正则奇点的判断与方法适用性}
+
+对于二阶微分方程：
+\begin{equation}
+A(x)y'' + B(x)y' + C(x)y = 0
+\end{equation}
+首先将其化为标准形式 $y'' + P(x)y' + Q(x)y = 0$，其中 $P(x) = \frac{B(x)}{A(x)}, Q(x) = \frac{C(x)}{A(x)}$。
+
+\begin{itemize}
+    \item \textbf{常点 (Ordinary Point)}: 如果 $P(x)$ 和 $Q(x)$ 在 $x=x_0$ 处解析（分母不为0），则 $x_0$ 为常点。
+    \item \textbf{奇点 (Singular Point)}: 如果 $P(x)$ 或 $Q(x)$ 在 $x=x_0$ 处分母为0，则 $x_0$ 为奇点。
+\end{itemize}
+
+\textbf{判定正则性 (Regularity Test)}：
+计算以下两个极限（假设 $x_0=0$）：
+\[
+p_0 = \lim_{x \to 0} x P(x), \quad q_0 = \lim_{x \to 0} x^2 Q(x)
+\]
+\begin{enumerate}
+    \item 如果 $p_0$ 和 $q_0$ \textbf{均为有限值}，则 $x=0$ 是\textbf{正则奇点}。
+    \item 如果其中任意一个极限不存在或为无穷大，则为\textbf{非正则奇点}。
+\end{enumerate}
+
+\textbf{结论}：只有判定为\textbf{正则奇点}时，才可以使用弗罗贝尼乌斯方法，设解的形式为 $y = x^r \sum_{n=0}^{\infty} a_n x^n$。
+
+\subsection*{2. 指标方程的快速求解}
+
+无需将级数代入原方程，可利用极限值直接写出指标方程。
+
+\textbf{快速公式}：
+\begin{equation}
+\boxed{r(r-1) + p_0 r + q_0 = 0}
+\end{equation}
+
+\textbf{操作步骤}：
+\begin{enumerate}
+    \item 将方程两端同乘 $x^2$（或 $x$），整理为以下形式（欧拉方程形式）：
+    \[ x^2 y'' + x[xp(x)]y' + [x^2q(x)]y = 0 \]
+    确保 $y''$ 前的系数仅为 $x^2$。
+    \item 读取 $x y'$ 的系数常数项即为 $p_0$。
+    \item 读取 $y$ 的系数常数项即为 $q_0$。
+    \item 代入公式解出 $r_1, r_2$。
+\end{enumerate}
+
+\subsection*{3. 递推公式的构建（半自动法）}
+
+这是求解 $a_n$ 的核心技巧。我们将方程中的项分为“标准项”和“移位项（捣乱项）”。
+
+\subsubsection{基本原理}
+递推公式的结构总是：
+\begin{equation}
+I(n+r)a_n + \sum (\text{移位项贡献}) = 0
+\end{equation}
+其中 $I(r) = r(r-1) + p_0r + q_0$ 是指标多项式。
+
+\subsubsection{如何识别与处理}
+
+\textbf{1. 标准项 (归入 $a_n$)}：
+保持 $x$ 幂次平衡的项，它们的和即为 $I(n+r)a_n$。
+\begin{itemize}
+    \item $x^2 y''$
+    \item $x y'$
+    \item 常数 $\cdot y$
+\end{itemize}
+
+\textbf{2. 移位项 (归入 $a_{n-k}$)}：
+比标准项\textbf{多乘了 $x^k$} 的项。处理规则如下表：
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{项的形式} & \textbf{多出的 $x$ 次数 ($k$)} & \textbf{对应系数归属} & \textbf{系数写法 (变标)} \\
+\hline
+$C \cdot x y$ & $k=1$ & $a_{n-1}$ & $C$ \\
+\hline
+$C \cdot x^2 y$ & $k=2$ & $a_{n-2}$ & $C$ \\
+\hline
+$C \cdot x^2 y'$ & $k=1$ & $a_{n-1}$ & $C(n-1+r)$ \\
+\hline
+$C \cdot x^3 y''$ & $k=1$ & $a_{n-1}$ & $C(n-1+r)(n-1+r-1)$ \\
+\hline
+\end{tabular}
+\caption{移位项系数处理法则}
+\end{table}
+
+\textbf{核心口诀}：
+\begin{quote}
+多乘 $k$ 个 $x$，下标退 $k$ 步 ($a_{n-k}$)，系数里的 $n$ 也要换成 $n-k$。
+\end{quote}
+
+\subsubsection{示例}
+对于方程 $2x^2 y'' + 7x(x+1)y' - 3y = 0$：
+\begin{enumerate}
+    \item \textbf{找 $I(r)$}：由 $2x^2 y'' + 7xy' - 3y$ 得到 $I(r) = 2r(r-1)+7r-3$。
+    \item \textbf{找移位项}：展开 $7x(x+1)y'$ 得到多余项 $7x^2 y'$。
+    \item \textbf{判断移位}：$7x^2 y'$ 比 $xy'$ 多一个 $x$，故对应 $a_{n-1}$。系数由 $7(n+r)$ 变为 $7(n-1+r)$。
+    \item \textbf{合成公式}：
+    \[ I(n+r)a_n + 7(n+r-1)a_{n-1} = 0 \]
+\end{enumerate}
+
+\subsection*{4. 完整解题流程清单}
+
+\begin{enumerate}
+    \item \textbf{标准化}：整理方程，确保 $x=0$ 为正则奇点。
+    \item \textbf{定指标}：使用快速公式求出 $r_1, r_2$。
+    \item \textbf{判差值}：计算 $\Delta = r_1 - r_2$。
+    \begin{itemize}
+        \item $\Delta$ 非整数：大吉，直接算两个解。
+        \item $\Delta$ 为整数或 0：注意小根可能含 $\ln x$，优先算大根。
+    \end{itemize}
+    \item \textbf{列递推}：使用半自动法写出 $a_n$ 与 $a_{n-k}$ 的关系。
+    \item \textbf{代入算}：
+        \begin{itemize}
+            \item 将 $r_1$（大根）代入递推式，求出 $a_n$ 通项或前几项，得到 $y_1$。
+            \item 若需要，对 $r_2$ 重复此步骤（仅当 $\Delta$ 非整数时安全）。
+        \end{itemize}
+    \item \textbf{写通解}：$y = C_1 y_1 + C_2 y_2$。
+\end{enumerate}
+
+\chapter*{5 拉普拉斯变换}
+
+\section*{5.1 拉普拉斯逆变换与代数技巧：部分分式展开}
+
+在求解微分方程时，我们将问题从 $t$ 域转换到 $s$ 域，得到 $Y(s)$ 后，核心难点往往在于如何求逆变换 $\mathcal{L}^{-1}\{Y(s)\}$。当 $Y(s)$ 为有理分式 $\frac{P(s)}{Q(s)}$ 时，部分分式分解（Partial Fraction Decomposition）是必不可少的工具。
+
+\subsection*{5.1.1 不仅是简单的分解：处理既约二次因式}
+考试中常出现的难点在于分母包含无法实数分解的二次项（即判别式 $\Delta < 0$）以及高次重复项。此时需要结合\textbf{配方法}与\textbf{频移定理}。
+
+\begin{itemize}
+    \item \textbf{实根情形}：对于 $(s-a)$，对应 $Ae^{at}$。
+    \item \textbf{复根情形}：对于 $(s-\alpha)^2 + \beta^2$，需凑成 $\frac{s-\alpha}{(s-\alpha)^2+\beta^2}$ (余弦项) 或 $\frac{\beta}{(s-\alpha)^2+\beta^2}$ (正弦项)。
+\end{itemize}
+
+\subsubsection*{典型例题 1}
+求下列函数的拉普拉斯逆变换：
+$$ F(s) = \frac{3s + 5}{(s+1)(s^2 + 2s + 5)} $$
+
+\textbf{解：}
+观察分母，$(s^2+2s+5)$ 判别式小于0，应配方为 $(s+1)^2 + 4$。设部分分式形式为：
+$$ \frac{3s + 5}{(s+1)((s+1)^2 + 4)} = \frac{A}{s+1} + \frac{B(s+1) + C}{(s+1)^2 + 4} $$
+注意：第二项分子写成 $B(s+1)+C$ 而非 $Bs+C$ 是为了利用第一平移定理，简化后续计算。
+
+通分并比较分子：
+$$ 3s + 5 = A[(s+1)^2 + 4] + [B(s+1) + C](s+1) $$
+令 $s = -1$，得 $2 = A(4) \implies A = \frac{1}{2}$。
+比较 $s^2$ 系数：$0 = A + B \implies B = -A = -\frac{1}{2}$。
+比较常数项：$5 = 5A + C \implies 5 = \frac{5}{2} + C \implies C = \frac{5}{2}$。
+
+代回原式：
+$$ F(s) = \frac{1}{2} \cdot \frac{1}{s+1} - \frac{1}{2} \cdot \frac{s+1}{(s+1)^2 + 2^2} + \frac{5}{4} \cdot \frac{2}{(s+1)^2 + 2^2} $$
+利用逆变换线性性质及第一平移定理 $\mathcal{L}^{-1}\{F(s+a)\} = e^{-at}f(t)$：
+$$ \boxed{f(t) = \frac{1}{2}e^{-t} - \frac{1}{2}e^{-t}\cos(2t) + \frac{5}{4}e^{-t}\sin(2t)} $$
+
+\section*{5.2 非连续强迫函数：单位阶跃函数与平移}
+
+在工程控制系统中，开关的闭合与断开由单位阶跃函数（Unit Step Function，或Heaviside Function）描述：
+$$ u(t-a) = \begin{cases} 0, & 0 \le t < a \\ 1, & t \ge a \end{cases} $$
+其核心定理为\textbf{第二平移定理}（$t$-shifting）：
+$$ \mathcal{L}\{f(t-a)u(t-a)\} = e^{-as}F(s) \quad \text{以及逆变换} \quad \mathcal{L}^{-1}\{e^{-as}F(s)\} = f(t-a)u(t-a) $$
+
+\subsection*{5.2.1 处理分段定义的微分方程}
+处理此类问题的关键是将分段函数改写为阶跃函数形式。
+
+\subsubsection*{典型例题 2}
+求解初值问题：
+$$ y'' + 4y = f(t), \quad y(0)=0, \, y'(0)=0 $$
+其中输入函数 $f(t)$ 定义为：
+$$ f(t) = \begin{cases} \sin t, & 0 \le t < \pi \\ 0, & t \ge \pi \end{cases} $$
+
+\textbf{解：}
+首先利用阶跃函数重写 $f(t)$：
+$$ f(t) = \sin t - \sin t \cdot u(t-\pi) = \sin t + \sin(t-\pi)u(t-\pi) $$
+注意：此处我们将 $-\sin t$ 改写为 $+\sin(t-\pi)$，是为了凑出 $f(t-a)$ 的形式以便变换。
+
+对方程两边取拉普拉斯变换：
+$$ (s^2 Y(s) - sy(0) - y'(0)) + 4Y(s) = \mathcal{L}\{\sin t\} + \mathcal{L}\{\sin(t-\pi)u(t-\pi)\} $$
+代入初值并变换：
+$$ (s^2 + 4)Y(s) = \frac{1}{s^2+1} + \frac{e^{-\pi s}}{s^2+1} $$
+解出 $Y(s)$：
+$$ Y(s) = \frac{1}{(s^2+1)(s^2+4)} (1 + e^{-\pi s}) $$
+利用部分分式分解 $\frac{1}{(s^2+1)(s^2+4)} = \frac{1}{3}(\frac{1}{s^2+1} - \frac{1}{s^2+4})$，令 $G(s) = \frac{1}{3}(\frac{1}{s^2+1} - \frac{1}{s^2+4})$，其逆变换为：
+$$ g(t) = \frac{1}{3}\left(\sin t - \frac{1}{2}\sin 2t\right) $$
+则 $y(t) = \mathcal{L}^{-1}\{G(s)\} + \mathcal{L}^{-1}\{e^{-\pi s}G(s)\}$。利用第二平移定理：
+$$ y(t) = g(t) + g(t-\pi)u(t-\pi) $$
+具体展开：
+$$ y(t) = \frac{1}{3}\left(\sin t - \frac{1}{2}\sin 2t\right) + \frac{1}{3}\left(\sin(t-\pi) - \frac{1}{2}\sin(2(t-\pi))\right)u(t-\pi) $$
+化简 $\sin(t-\pi) = -\sin t$ 和 $\sin(2t-2\pi) = \sin 2t$：
+$$ \boxed{y(t) = \frac{1}{3}\left(\sin t - \frac{1}{2}\sin 2t\right) - \frac{1}{3}\left(\sin t + \frac{1}{2}\sin 2t\right)u(t-\pi)} $$
+
+\section*{5.3 导数变换性质与高阶方程求解}
+
+拉普拉斯变换最显著的用途在于将微分运算转化为乘法运算。这是求解微分方程（尤其是高阶初值问题）的核心工具。
+
+\subsection*{5.3.1 导数变换定理}
+若 $f(t)$ 连续且具有指数阶，则其导数的变换公式为：
+$$ \mathcal{L}\{f'(t)\} = sF(s) - f(0) $$
+推广到 $n$ 阶导数，公式呈现出明显的规律（$s$ 的幂次递减，初值项导数阶数递增）：
+$$ \mathcal{L}\{f^{(n)}(t)\} = s^n F(s) - s^{n-1}f(0) - s^{n-2}f'(0) - \cdots - f^{(n-1)}(0) $$
+
+\textbf{常用公式速查：}
+\begin{itemize}
+    \item 二阶导数（考试最高频）：
+    $$ \mathcal{L}\{y''\} = s^2 Y(s) - s y(0) - y'(0) $$
+    \item 三阶导数：
+    $$ \mathcal{L}\{y'''\} = s^3 Y(s) - s^2 y(0) - s y'(0) - y''(0) $$
+\end{itemize}
+
+\subsection*{5.3.2 高阶初值问题实战}
+在处理高阶方程时，务必注意初值 $y(0), y'(0)$ 等前面的负号，以及乘以 $s$ 的幂次。
+
+\subsubsection*{典型例题 5}
+求解三阶线性微分方程的初值问题：
+$$ y''' + y' = 1, \quad y(0)=0, \, y'(0)=0, \, y''(0)=1 $$
+
+\textbf{解：}
+这是一个三阶常系数非齐次方程。
+第一步：对方程两边同时取拉普拉斯变换。
+利用三阶导数公式：
+$$ \mathcal{L}\{y'''\} = s^3 Y(s) - s^2 y(0) - s y'(0) - y''(0) $$
+代入题目给定的初值 $y(0)=0, y'(0)=0, y''(0)=1$：
+$$ \mathcal{L}\{y'''\} = s^3 Y(s) - 0 - 0 - 1 = s^3 Y(s) - 1 $$
+对于一阶导数项：
+$$ \mathcal{L}\{y'\} = s Y(s) - y(0) = s Y(s) $$
+常数项变换：$\mathcal{L}\{1\} = \frac{1}{s}$。
+
+第二步：代入原方程并整理代数方程。
+$$ (s^3 Y(s) - 1) + s Y(s) = \frac{1}{s} $$
+合并含有 $Y(s)$ 的项：
+$$ (s^3 + s) Y(s) = \frac{1}{s} + 1 = \frac{1+s}{s} $$
+$$ s(s^2+1) Y(s) = \frac{s+1}{s} $$
+解出 $Y(s)$：
+$$ Y(s) = \frac{s+1}{s^2(s^2+1)} $$
+
+第三步：部分分式分解。
+观察分母，有二重实根 $s=0$ 和一对复根 $s^2+1=0$。设：
+$$ \frac{s+1}{s^2(s^2+1)} = \frac{A}{s} + \frac{B}{s^2} + \frac{Cs+D}{s^2+1} $$
+通分比较分子：
+$$ s+1 = As(s^2+1) + B(s^2+1) + (Cs+D)s^2 $$
+$$ s+1 = (A+C)s^3 + (B+D)s^2 + As + B $$
+比较系数：
+\begin{itemize}
+    \item 常数项：$B = 1$
+    \item $s$ 项：$A = 1$
+    \item $s^2$ 项：$B + D = 0 \implies D = -1$
+    \item $s^3$ 项：$A + C = 0 \implies C = -1$
+\end{itemize}
+于是：
+$$ Y(s) = \frac{1}{s} + \frac{1}{s^2} - \frac{s}{s^2+1} - \frac{1}{s^2+1} $$
+
+第四步：取逆变换得到 $y(t)$。
+直接利用基本变换对：
+$$ y(t) = \mathcal{L}^{-1}\left\{ \frac{1}{s} \right\} + \mathcal{L}^{-1}\left\{ \frac{1}{s^2} \right\} - \mathcal{L}^{-1}\left\{ \frac{s}{s^2+1} \right\} - \mathcal{L}^{-1}\left\{ \frac{1}{s^2+1} \right\} $$
+$$ \boxed{y(t) = 1 + t - \cos t - \sin t} $$
+
+\section*{5.4 广义函数应用：狄拉克 $\delta$ 函数}
+
+当系统受到瞬间的剧烈冲击（如锤击、瞬时高压）时，我们使用狄拉克 $\delta$ 函数（Dirac Delta Function）建模。
+$$ \mathcal{L}\{\delta(t-t_0)\} = e^{-st_0}, \quad (t_0 \ge 0) $$
+特别地，当 $t_0=0$ 时，$\mathcal{L}\{\delta(t)\} = 1$。这意味着 $\delta(t)$ 的频谱包含所有频率且幅度相等。
+
+\subsection*{5.4.1 含冲击输入的初值问题}
+\subsubsection*{典型例题 3}
+求解阻尼振动系统在 $t=2$ 时受到冲击的响应：
+$$ y'' + 2y' + 2y = \delta(t-2), \quad y(0)=0, \, y'(0)=0 $$
+
+\textbf{解：}
+两边取变换：
+$$ s^2 Y + 2s Y + 2Y = e^{-2s} $$
+$$ Y(s) = \frac{e^{-2s}}{s^2 + 2s + 2} = \frac{e^{-2s}}{(s+1)^2 + 1} $$
+不含指数项的部分记为 $H(s) = \frac{1}{(s+1)^2+1}$。
+其逆变换为衰减正弦波：
+$$ h(t) = \mathcal{L}^{-1}\left\{\frac{1}{(s+1)^2+1}\right\} = e^{-t}\sin t $$
+根据含有 $e^{-2s}$ 的形式，应用第二平移定理：
+$$ y(t) = h(t-2)u(t-2) $$
+$$ \boxed{y(t) = e^{-(t-2)}\sin(t-2) \cdot u(t-2)} $$
+\textit{物理诠释：} 系统在 $t<2$ 时保持静止（$y=0$），在 $t=2$ 时刻受到冲击，随后开始进行指数衰减的自由振荡。
+
+\section*{5.5 积分方程与卷积定理}
+
+拉普拉斯变换的一个强大性质是将“卷积”转化为“乘积”。
+\textbf{卷积定理}：若 $f(t)$ 和 $g(t)$ 的变换分别为 $F(s)$ 和 $G(s)$，则：
+$$ \mathcal{L}\{f * g\} = \mathcal{L}\left\{ \int_0^t f(\tau)g(t-\tau) d\tau \right\} = F(s)G(s) $$
+
+\subsection*{5.5.1 求解沃尔泰拉（Volterra）积分方程}
+卷积定理常用于求解含有未知函数在积分号内的方程，无需将积分方程转化为微分方程。
+
+\subsubsection*{典型例题 4}
+求解未知函数 $f(t)$：
+$$ f(t) = t^2 + \int_0^t f(\tau) \sin(t-\tau) d\tau $$
+
+\textbf{解：}
+识别右边的积分为卷积形式 $f(t) * \sin t$。原方程可写为：
+$$ f(t) = t^2 + f(t) * \sin t $$
+两边同时取拉普拉斯变换，利用卷积定理：
+$$ F(s) = \frac{2}{s^3} + F(s) \cdot \frac{1}{s^2+1} $$
+将含 $F(s)$ 的项移至左边：
+$$ F(s) \left( 1 - \frac{1}{s^2+1} \right) = \frac{2}{s^3} $$
+通分括号内各项：
+$$ F(s) \left( \frac{s^2}{s^2+1} \right) = \frac{2}{s^3} $$
+解出 $F(s)$：
+$$ F(s) = \frac{2}{s^3} \cdot \frac{s^2+1}{s^2} = \frac{2(s^2+1)}{s^5} = \frac{2}{s^3} + \frac{2}{s^5} $$
+取逆变换求解 $f(t)$。已知 $\mathcal{L}^{-1}\{\frac{n!}{s^{n+1}}\} = t^n$：
+\begin{itemize}
+    \item 对于 $\frac{2}{s^3}$：对应 $2 \cdot \frac{t^2}{2!} = t^2$。
+    \item 对于 $\frac{2}{s^5}$：需配凑阶乘，$\frac{2}{4!} \cdot \frac{4!}{s^5} = \frac{1}{12} t^4$。
+\end{itemize}
+最终结果：
+$$ \boxed{f(t) = t^2 + \frac{1}{12}t^4} $$
+
+\chapter*{6 一阶线性方程组}
+
+本章详细阐述常系数一阶线性微分方程组
+\begin{equation}
+    \mathbf{x}'(t) = A\mathbf{x}(t) + \mathbf{f}(t)
+\end{equation}
+的四种主要解法。其中 $\mathbf{x}(t)$ 为 $n$ 维列向量，$A$ 为 $n \times n$ 常数矩阵。
+
+\section*{6.1 特征向量法}
+
+\subsection*{6.1.1 原理说明}
+当矩阵 $A$ 拥有 $n$ 个线性无关的特征向量 $\mathbf{v}_1, \dots, \mathbf{v}_n$，对应的实特征值为 $\lambda_1, \dots, \lambda_n$ 时，齐次方程组 $\mathbf{x}' = A\mathbf{x}$ 的通解是各特征解的线性组合。
+
+\subsection*{6.1.2 求解步骤}
+\begin{enumerate}
+    \item 计算特征方程 $\det(A - \lambda I) = 0$，求出特征值 $\lambda_i$。
+    \item 对每个 $\lambda_i$，求解 $(A - \lambda_i I)\mathbf{v}_i = \mathbf{0}$ 得到特征向量 $\mathbf{v}_i$。
+    \item 若所有特征值互异（或虽有重根但有足够的几何重数），通解形式为：
+    \begin{equation}
+        \mathbf{x}(t) = c_1 e^{\lambda_1 t}\mathbf{v}_1 + c_2 e^{\lambda_2 t}\mathbf{v}_2 + \dots + c_n e^{\lambda_n t}\mathbf{v}_n
+    \end{equation}
+\end{enumerate}
+
+\subsection*{6.1.3 完整实例}
+\textbf{题目}：求解 $\mathbf{x}' = \begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix} \mathbf{x}$。
+
+\textbf{解}：
+1. \textbf{求特征值}：
+   \[
+   \det(A - \lambda I) = \begin{vmatrix} 2-\lambda & 1 \\ 1 & 2-\lambda \end{vmatrix} = (\lambda-2)^2 - 1 = \lambda^2 - 4\lambda + 3 = (\lambda-1)(\lambda-3) = 0
+   \]
+   得到 $\lambda_1 = 1, \lambda_2 = 3$。
+
+2. \textbf{求特征向量}：
+   \begin{itemize}
+       \item 当 $\lambda_1 = 1$ 时：
+       \[
+       (A - I)\mathbf{v} = \begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix} \begin{pmatrix} v_1 \\ v_2 \end{pmatrix} = \mathbf{0} \Rightarrow v_1 + v_2 = 0 \Rightarrow \mathbf{v}_1 = \begin{pmatrix} 1 \\ -1 \end{pmatrix}
+       \]
+       \item 当 $\lambda_2 = 3$ 时：
+       \[
+       (A - 3I)\mathbf{v} = \begin{pmatrix} -1 & 1 \\ 1 & -1 \end{pmatrix} \begin{pmatrix} v_1 \\ v_2 \end{pmatrix} = \mathbf{0} \Rightarrow -v_1 + v_2 = 0 \Rightarrow \mathbf{v}_2 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}
+       \]
+   \end{itemize}
+
+3. \textbf{最终解}：
+   \begin{equation}
+       \mathbf{x}(t) = c_1 e^{t} \begin{pmatrix} 1 \\ -1 \end{pmatrix} + c_2 e^{3t} \begin{pmatrix} 1 \\ 1 \end{pmatrix}
+   \end{equation}
+
+\section*{6.2 广义特征向量法（Jordan 标准型）}
+
+\subsection*{6.2.1 原理说明}
+当矩阵 $A$ 存在重复的特征值且其几何重数小于代数重数（即特征向量缺损）时，无法找到 $n$ 个线性无关的特征向量。此时需引入\textbf{广义特征向量}。对于二重特征值 $\lambda$ 只有一个特征向量 $\mathbf{v}$ 的情况，我们需要寻找 $\mathbf{u}$ 满足 $(A-\lambda I)\mathbf{u} = \mathbf{v}$。
+
+\subsection*{6.2.2 求解步骤（以 $2\times 2$ 缺损矩阵为例）}
+\begin{enumerate}
+    \item 求出重特征值 $\lambda$ 及对应的一个特征向量 $\mathbf{v}$，即 $(A-\lambda I)\mathbf{v} = \mathbf{0}$。
+    \item 求解广义特征向量 $\eta$，满足方程 $(A-\lambda I)\eta = \mathbf{v}$。
+    \item 构造两个线性无关解：
+    \begin{align*}
+        \mathbf{x}_1(t) &= e^{\lambda t}\mathbf{v} \\
+        \mathbf{x}_2(t) &= e^{\lambda t}(t\mathbf{v} + \eta)
+    \end{align*}
+    \item 通解为 $\mathbf{x}(t) = c_1 \mathbf{x}_1(t) + c_2 \mathbf{x}_2(t)$。
+\end{enumerate}
+
+\subsection*{6.2.3 完整实例}
+\textbf{题目}：求解 $\mathbf{x}' = \begin{pmatrix} 3 & 1 \\ 0 & 3 \end{pmatrix} \mathbf{x}$。
+
+\textbf{解}：
+1. \textbf{求特征值}：$\det(A-\lambda I) = (3-\lambda)^2 = 0 \Rightarrow \lambda = 3$（代数重数为2）。
+
+2. \textbf{求特征向量}：
+   \[
+   (A - 3I)\mathbf{v} = \begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix} \begin{pmatrix} v_1 \\ v_2 \end{pmatrix} = \mathbf{0} \Rightarrow v_2 = 0
+   \]
+   取 $\mathbf{v} = \begin{pmatrix} 1 \\ 0 \end{pmatrix}$。仅有一个独立特征向量，矩阵缺损。
+
+3. \textbf{求广义特征向量} $\mathbf{u}$：
+   解 $(A - 3I)\mathbf{u} = \mathbf{v}$：
+   \[
+   \begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix} \begin{pmatrix} u_1 \\ u_2 \end{pmatrix} = \begin{pmatrix} 1 \\ 0 \end{pmatrix} \Rightarrow u_2 = 1
+   \]
+   $u_1$ 可任意取值，取 $u_1=0$，得 $\mathbf{u} = \begin{pmatrix} 0 \\ 1 \end{pmatrix}$。
+
+4. \textbf{最终解}：
+   \[
+   \mathbf{x}(t) = c_1 e^{3t} \begin{pmatrix} 1 \\ 0 \end{pmatrix} + c_2 e^{3t} \left[ t \begin{pmatrix} 1 \\ 0 \end{pmatrix} + \begin{pmatrix} 0 \\ 1 \end{pmatrix} \right] = e^{3t} \begin{pmatrix} c_1 + c_2 t \\ c_2 \end{pmatrix}
+   \]
+
+\section*{6.3 复数特征值解法}
+
+\subsection*{6.3.1 原理说明}
+若矩阵 $A$ 有共轭复特征值 $\lambda = \alpha \pm i\beta$，对应的特征向量也是共轭的 $\mathbf{w} = \mathbf{u} \pm i\mathbf{v}$。利用欧拉公式 $e^{(\alpha + i\beta)t} = e^{\alpha t}(\cos \beta t + i \sin \beta t)$，我们可以提取复数解的实部和虚部作为两个实数基解。
+
+\subsection*{6.3.2 求解步骤}
+\begin{enumerate}
+    \item 求出特征值 $\lambda = \alpha + i\beta$。
+    \item 求出对应的复特征向量 $\mathbf{w} = \mathbf{u} + i\mathbf{v}$。
+    \item 构造复数解 $\mathbf{z}(t) = e^{\lambda t}\mathbf{w}$，并展开：
+    \[
+    \mathbf{z}(t) = e^{\alpha t}(\cos \beta t + i \sin \beta t)(\mathbf{u} + i\mathbf{v})
+    \]
+    \item 提取实部和虚部作为实值通解的基：
+    \begin{align*}
+        \mathbf{x}_1(t) &= \text{Re}(\mathbf{z}(t)) = e^{\alpha t}(\mathbf{u} \cos \beta t - \mathbf{v} \sin \beta t) \\
+        \mathbf{x}_2(t) &= \text{Im}(\mathbf{z}(t)) = e^{\alpha t}(\mathbf{u} \sin \beta t + \mathbf{v} \cos \beta t)
+    \end{align*}
+\end{enumerate}
+
+\subsection*{6.3.3 完整实例}
+\textbf{题目}：求解 $\mathbf{x}' = \begin{pmatrix} 1 & -1 \\ 1 & 1 \end{pmatrix} \mathbf{x}$。
+
+\textbf{解}：
+1. \textbf{求特征值}：
+   $\det(A-\lambda I) = (1-\lambda)^2 + 1 = 0 \Rightarrow (1-\lambda)^2 = -1 \Rightarrow \lambda = 1 \pm i$。
+   取 $\lambda = 1 + i$，即 $\alpha=1, \beta=1$。
+
+2. \textbf{求特征向量}（针对 $\lambda = 1+i$）：
+   \[
+   (A - (1+i)I)\mathbf{w} = \begin{pmatrix} -i & -1 \\ 1 & -i \end{pmatrix} \begin{pmatrix} w_1 \\ w_2 \end{pmatrix} = \mathbf{0}
+   \]
+   第一行 $-iw_1 - w_2 = 0 \Rightarrow w_2 = -iw_1$。取 $w_1 = 1$，则 $w_2 = -i$。
+   \[
+   \mathbf{w} = \begin{pmatrix} 1 \\ -i \end{pmatrix} = \begin{pmatrix} 1 \\ 0 \end{pmatrix} + i \begin{pmatrix} 0 \\ -1 \end{pmatrix} \quad \Rightarrow \quad \mathbf{u} = \begin{pmatrix} 1 \\ 0 \end{pmatrix}, \mathbf{v} = \begin{pmatrix} 0 \\ -1 \end{pmatrix}
+   \]
+
+3. \textbf{构造实解}：
+   \begin{align*}
+       \mathbf{x}_1(t) &= e^t \left[ \begin{pmatrix} 1 \\ 0 \end{pmatrix} \cos t - \begin{pmatrix} 0 \\ -1 \end{pmatrix} \sin t \right] = e^t \begin{pmatrix} \cos t \\ \sin t \end{pmatrix} \\
+       \mathbf{x}_2(t) &= e^t \left[ \begin{pmatrix} 1 \\ 0 \end{pmatrix} \sin t + \begin{pmatrix} 0 \\ -1 \end{pmatrix} \cos t \right] = e^t \begin{pmatrix} \sin t \\ -\cos t \end{pmatrix}
+   \end{align*}
+
+4. \textbf{最终解}：
+   $\mathbf{x}(t) = c_1 e^t \begin{pmatrix} \cos t \\ \sin t \end{pmatrix} + c_2 e^t \begin{pmatrix} \sin t \\ -\cos t \end{pmatrix}$。
+
+\section*{6.4 非齐次方程组解法（待定系数法）}
+
+\subsection*{6.4.1 原理说明}
+对于非齐次方程 $\mathbf{x}' = A\mathbf{x} + \mathbf{f}(t)$，若非齐次项 $\mathbf{f}(t)$ 的形式较为简单（如多项式、指数 $e^{\lambda t}$、三角函数 $\sin \omega t, \cos \omega t$），我们可以根据 $\mathbf{f}(t)$ 的形式推测特解 $\mathbf{x}_p(t)$ 的结构，设出待定向量，代入原方程求解系数。
+
+\textbf{设解规则（含共振情况）：}
+\begin{itemize}
+    \item 若 $\mathbf{f}(t) = e^{\mu t}\mathbf{k}$，且 $\mu$ 不是特征值，设 $\mathbf{x}_p = e^{\mu t}\mathbf{a}$。
+    \item 若 $\mu$ 是特征值（发生共振），通常需设 $\mathbf{x}_p = e^{\mu t}(\mathbf{a} + \mathbf{b}t)$。
+    \item 注意：与标量微分方程不同，即使发生共振，有时也可能不需要 $t$ 项，但设为 $\mathbf{a} + \mathbf{b}t$ 是最通用的安全策略。
+\end{itemize}
+
+\subsection*{6.4.2 求解步骤}
+\begin{enumerate}
+    \item \textbf{求齐次解 $\mathbf{x}_h$}：计算特征值与特征向量，确定齐次通解结构。
+    \item \textbf{设定特解形式}：观察 $\mathbf{f}(t)$ 并对比特征值，写出含待定向量 $\mathbf{a}, \mathbf{b}, \dots$ 的表达式 $\mathbf{x}_p(t)$。
+    \item \textbf{代入求解}：
+    \begin{enumerate}
+        \item 计算 $\mathbf{x}_p'(t)$。
+        \item 将 $\mathbf{x}_p$ 和 $\mathbf{x}_p'$ 代入方程 $\mathbf{x}' = A\mathbf{x} + \mathbf{f}(t)$。
+        \item 比较等式两边同类项（如 $t^k, e^{\lambda t}$ 等）的系数，建立关于 $\mathbf{a}, \mathbf{b}$ 的线性方程组。
+        \item 解出待定向量。
+    \end{enumerate}
+    \item \textbf{组合}：通解 $\mathbf{x}(t) = \mathbf{x}_h(t) + \mathbf{x}_p(t)$。
+\end{enumerate}
+
+\subsection*{6.4.3 完整实例}
+\textbf{题目}：求解 $\mathbf{x}' = \begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix} \mathbf{x} + \begin{pmatrix} e^t \\ e^t \end{pmatrix}$。
+
+\textbf{解}：
+
+\textbf{第一步：求齐次通解 $\mathbf{x}_h$}
+特征值 $\lambda_1=1, \lambda_2=3$。对应特征向量 $\mathbf{v}_1=(1, -1)^T, \mathbf{v}_2=(1, 1)^T$。
+\[
+\mathbf{x}_h(t) = c_1 e^t \begin{pmatrix} 1 \\ -1 \end{pmatrix} + c_2 e^{3t} \begin{pmatrix} 1 \\ 1 \end{pmatrix}
+\]
+
+\textbf{第二步：设定特解 $\mathbf{x}_p$}
+非齐次项 $\mathbf{f}(t) = e^t \begin{pmatrix} 1 \\ 1 \end{pmatrix}$。
+指数系数 $\mu = 1$ 与特征值 $\lambda_1 = 1$ 重合（共振）。
+为了保险起见，我们设特解形式为一次多项式乘指数：
+\[
+\mathbf{x}_p(t) = e^t (\mathbf{a} + \mathbf{b}t) = e^t \begin{pmatrix} a_1 \\ a_2 \end{pmatrix} + t e^t \begin{pmatrix} b_1 \\ b_2 \end{pmatrix}
+\]
+其中 $\mathbf{a}, \mathbf{b}$ 为常向量。
+
+\textbf{第三步：代入方程求解}
+1. 对 $\mathbf{x}_p$ 求导：
+   \[
+   \mathbf{x}_p'(t) = e^t(\mathbf{a} + \mathbf{b}t) + e^t(\mathbf{b}) = e^t(\mathbf{a} + \mathbf{b} + \mathbf{b}t)
+   \]
+2. 代入原方程 $\mathbf{x}' = A\mathbf{x} + e^t \begin{pmatrix} 1 \\ 1 \end{pmatrix}$：
+   \[
+   e^t(\mathbf{a} + \mathbf{b} + \mathbf{b}t) = A [e^t(\mathbf{a} + \mathbf{b}t)] + e^t \begin{pmatrix} 1 \\ 1 \end{pmatrix}
+   \]
+   消去 $e^t$，整理得：
+   \[
+   \mathbf{b} t + (\mathbf{a} + \mathbf{b}) = A\mathbf{b} t + A\mathbf{a} + \begin{pmatrix} 1 \\ 1 \end{pmatrix}
+   \]
+3. 比较系数：
+   \begin{itemize}
+       \item \textbf{$t$ 的系数}：$\mathbf{b} = A\mathbf{b} \Rightarrow (A-I)\mathbf{b} = \mathbf{0}$。
+         这意味着 $\mathbf{b}$ 必须是 $\lambda=1$ 的特征向量，即 $\mathbf{b} = k \begin{pmatrix} 1 \\ -1 \end{pmatrix}$。
+
+       \item \textbf{常数项}：$\mathbf{a} + \mathbf{b} = A\mathbf{a} + \begin{pmatrix} 1 \\ 1 \end{pmatrix} \Rightarrow (A-I)\mathbf{a} = \mathbf{b} - \begin{pmatrix} 1 \\ 1 \end{pmatrix}$。
+   \end{itemize}
+
+4. 求解 $\mathbf{a}$ 和 $\mathbf{b}$：
+   代入 $\mathbf{b}$ 的表达式：
+   \[
+   \begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix} \begin{pmatrix} a_1 \\ a_2 \end{pmatrix} = k \begin{pmatrix} 1 \\ -1 \end{pmatrix} - \begin{pmatrix} 1 \\ 1 \end{pmatrix} = \begin{pmatrix} k-1 \\ -k-1 \end{pmatrix}
+   \]
+   根据线性代数理论，方程 $M\mathbf{x}=\mathbf{y}$ 有解的条件是 $\mathbf{y}$ 在 $M$ 的列空间内。
+   矩阵 $\begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix}$ 的行向量相同，故要求右边向量的上下分量也相同：
+   \[
+   k-1 = -k-1 \implies 2k = 0 \implies k = 0
+   \]
+   因此 $\mathbf{b} = \mathbf{0}$。
+   
+   现在解关于 $\mathbf{a}$ 的方程：
+   \[
+   \begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix} \begin{pmatrix} a_1 \\ a_2 \end{pmatrix} = \begin{pmatrix} -1 \\ -1 \end{pmatrix}
+   \]
+   展开得 $a_1 + a_2 = -1$。这是一个不定方程，我们要找\textbf{一个}特解即可，取最简单的：
+   令 $a_1 = -\frac{1}{2}, a_2 = -\frac{1}{2}$。
+   
+   故特解为：
+   \[
+   \mathbf{x}_p(t) = e^t \begin{pmatrix} -1/2 \\ -1/2 \end{pmatrix}
+   \]
+
+\textbf{第四步：组合通解}
+\[
+\mathbf{x}(t) = c_1 e^t \begin{pmatrix} 1 \\ -1 \end{pmatrix} + c_2 e^{3t} \begin{pmatrix} 1 \\ 1 \end{pmatrix} - \frac{1}{2}e^t \begin{pmatrix} 1 \\ 1 \end{pmatrix}
+\]
+\textit{注：由于 $c_1$ 是任意常数，$\mathbf{x}_p$ 中的同类项有时可合并至齐次解中，但在写特解时保留原样即可。}
 
 \end{document}
